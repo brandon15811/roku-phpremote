@@ -1,0 +1,161 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta name="apple-mobile-web-app-capable" content="yes" /> 
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=no;" />	
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<script src="cookie.js" type="text/javascript"></script>
+    <script type="text/javascript">
+function gup( name )
+{
+  name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+  var regexS = "[\\?&]"+name+"=([^&#]*)";
+  var regex = new RegExp( regexS );
+  var results = regex.exec( window.location.href );
+  if( results == null )
+    return "";
+  else
+    return results[1];
+}
+if (gup('ip'))
+	{
+	setCookie('ip',gup('ip'),3650);
+	ip=getCookie('ip');
+	}
+else if (!checkCookie())
+	{
+	window.location='config.html'
+	}
+else
+	{
+	ip=getCookie('ip');
+	}
+function press(type,cmd)
+{
+	xmlhttp=new XMLHttpRequest();
+	if (type=="query")
+	{
+		php=getCookie('php')
+		if (php="on")
+		{
+			console.log(php)
+			url="/xml.php"
+		} else {
+			url="http://"+ip+":8060/" + type + "/" + cmd
+		}
+		xmlhttp.open("GET",url,true);
+		xmlhttp.onreadystatechange=function()
+		{
+			if (xmlhttp.readyState==4 && xmlhttp.status==200)
+			{
+			parser=new DOMParser();
+			xmlDoc=parser.parseFromString(xmlhttp.responseText,"text/xml");
+			applist(xmlDoc);
+			}
+		}
+	xmlhttp.send();
+	}
+	else
+	{
+	xmlhttp.open("POST","http://"+ip+":8060/" + type + "/" + cmd,true);
+	xmlhttp.send();
+	}
+}
+</script>
+    <title>Clicks, Captions and Order</title>
+    
+    <link rel="stylesheet" type="text/css" href="zflow.css" />
+    <!-- link rel="apple-touch-icon" href="../images/WebClipIcon.png" />
+    <link rel="apple-touch-startup-image" href="../images/startup.png" / -->
+    
+    <style type="text/css">
+
+    body
+    {
+        background-color: #070035;
+        color: #FD8D29;
+        font-size: 8px;
+        margin: 0;
+        padding: 0;
+        font-family: Helvetica;
+    }
+
+    .portrait { width: 320px; height: 416px; }
+    .landscape { width: 480px; height: 270px; }
+
+	</style>
+
+    <script type="text/javascript" src="zflow.js"></script>
+    
+    <script type="text/javascript">
+	var xmltxt=press('query','apps');
+	var linksArray = Array();
+	var captionsArray = Array();
+	var images = Array();
+	function applist(xmll)
+	{
+		xmltxt=xmll.getElementsByTagName("apps");
+		xmltxt=xmltxt[0].getElementsByTagName("app");
+		appid=document.getElementById('applist');
+		for (i=0;i<xmltxt.length;i++)
+		{ 
+			xmltx=xmltxt[i]
+			linksArray.push("javascript:press(\'launch\',\'" + xmltx.getAttribute('id') + "\')")
+			captionsArray.push(xmltx.childNodes[0].nodeValue)
+			images.push("http://192.168.1.102:8060/query/icon/"+xmltx.getAttribute('id'))
+		}
+		init(linksArray,captionsArray,images);
+	}
+	/*var linksArray = Array(
+	["http://www.google.com"],
+	["http://www.satine.org/archives/2008/11/06/coverflow-for-safari-on-iphone/"], 
+	["http://www.sebastianwahl.com/iphone"], 
+	["http://randy.kato.com"]);
+	
+	var captionsArray = Array(
+	["This is a caption lorem ipsum"],
+	["Here's one that we'll<br>make into two lines"], 
+	["&quot;Quotes&quot; and &copy;s and &trade;s, oh my!"], 
+	["Blah Blah Blooey"]);
+	
+	var images = Array(
+	["http://192.168.1.102:8060/query/icon/12"], 
+	["http://192.168.1.102:8060/query/icon/11"], 
+	["http://192.168.1.102:8060/query/icon/14"], 
+	["http://192.168.1.102:8060/query/icon/13"]);*/
+	
+	
+function init(linksArray,captionsArray,images)
+{
+	captionsArray=captionsArray
+	linksArray=linksArray
+	console.log(linksArray)
+    window.onorientationchange(null);
+	
+	zflow(images, "#tray");
+}
+
+window.onorientationchange = function (event)
+{
+    if (window.orientation == 0)
+    {
+		document.getElementById("container").className="centering portrait";
+    }
+    else
+    {
+		document.getElementById("container").className="centering landscape";		
+    }
+}
+</script>
+
+</head>
+
+<body class="zflow">
+
+<div id="container" class="centering">
+    <div id="tray" class="tray"></div>
+</div>
+</body>
+</html>

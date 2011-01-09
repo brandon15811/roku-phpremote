@@ -1,0 +1,103 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta content="yes" name="apple-mobile-web-app-capable" />
+<meta content="index,follow" name="robots" />
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type" />
+<link href="pics/homescreen.png" rel="apple-touch-icon" />
+<meta name = "viewport" content = "user-scalable=no, width=device-width">
+<link href="css/style.css" rel="stylesheet" type="text/css" />
+<script src="javascript/functions.js" type="text/javascript"></script>
+<script src="cookie.js" type="text/javascript"></script>
+<script type="text/javascript">
+function gup( name )
+{
+  name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+  var regexS = "[\\?&]"+name+"=([^&#]*)";
+  var regex = new RegExp( regexS );
+  var results = regex.exec( window.location.href );
+  if( results == null )
+    return "";
+  else
+    return results[1];
+}
+if (gup('ip'))
+	{
+	setCookie('ip',gup('ip'),3650);
+	ip=getCookie('ip');
+	}
+else if (!checkCookie())
+	{
+	window.location='config.html'
+	}
+else
+	{
+	ip=getCookie('ip');
+	}
+function press(type,cmd)
+{
+	xmlhttp=new XMLHttpRequest();
+	if (type=="query")
+	{
+		php=getCookie('php')
+		if (php="on")
+		{
+			console.log(php)
+			url="xml.php"
+		} else {
+			url="http://"+ip+":8060/" + type + "/" + cmd
+		}
+		xmlhttp.open("GET",url,true);
+		xmlhttp.onreadystatechange=function()
+		{
+			if (xmlhttp.readyState==4 && xmlhttp.status==200)
+			{
+			parser=new DOMParser();
+			xmlDoc=parser.parseFromString(xmlhttp.responseText,"text/xml");
+			applist(xmlDoc);
+			}
+		}
+	xmlhttp.send();
+	}
+	else
+	{
+	xmlhttp.open("POST","http://"+ip+":8060/" + type + "/" + cmd,true);
+	xmlhttp.send();
+	}
+}
+</script>
+</head>
+
+
+<body>
+<div id="topbar" class="black">
+	<div id="title">Roku Remote</div>
+	<div id="leftnav">
+		<a href="index.html"><img alt="home" src="images/home.png" /></a></div>
+	<div id="rightbutton">
+		<a href="config.html">Config</a></div>
+</div>
+
+
+<div id="content">
+
+<script type="text/javascript">
+
+var xmltxt=press('query','apps');
+function applist(xmll)
+{
+xmltxt=xmll.getElementsByTagName("apps");
+xmltxt=xmltxt[0].getElementsByTagName("app");
+appid=document.getElementById('applist');
+for (i=0;i<xmltxt.length;i++)
+  { 
+  xmltx=xmltxt[i]
+  appid.innerHTML=appid.innerHTML+'<li class="menu" onclick="press(\'launch\',\'' + xmltx.getAttribute('id') + '\')">'+'<a href="#">'+'<img alt="Description" src="http://192.168.1.102:8060/query/icon/'+xmltx.getAttribute('id')+'" />'+'<span class="name">'+xmltx.childNodes[0].nodeValue+'</span><span class="arrow"></span></a></li>';
+  }
+}
+</script>
+<ul class="pageitem" id='applist'>      
+</ul>
+</div>
+</body>
+</html>
