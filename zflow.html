@@ -41,7 +41,7 @@ function press(type,cmd)
 		if (php="on")
 		{
 			console.log(php)
-			url="/xml.php"
+			url="xml.php"
 		} else {
 			url="http://"+ip+":8060/" + type + "/" + cmd
 		}
@@ -66,7 +66,7 @@ function press(type,cmd)
 </script>
     <title>Clicks, Captions and Order</title>
     
-    <link rel="stylesheet" type="text/css" href="zflow.css" />
+    <link rel="stylesheet" type="text/css" href="css/zflow.css" />
     <!-- link rel="apple-touch-icon" href="../images/WebClipIcon.png" />
     <link rel="apple-touch-startup-image" href="../images/startup.png" / -->
     
@@ -87,7 +87,7 @@ function press(type,cmd)
 
 	</style>
 
-    <script type="text/javascript" src="zflow.js"></script>
+    <script type="text/javascript" src="javascript/zflow.js"></script>
     
     <script type="text/javascript">
 	var xmltxt=press('query','apps');
