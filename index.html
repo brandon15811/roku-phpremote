@@ -53,17 +53,17 @@ function press(type, cmd)
 }
 function kb() {
 	var bla1=document.input.str.value;
-	if(bla1.length == 0)
-		{
-		}
-	else if (window.event.keyCode == 8)
+	if (window.event.keyCode == 8)
         {
         press('keypress','Backspace');
-        }
+        } 
 	else if (window.event.keyCode == 127)
 		{
 		press('keypress','Backspace');
-		}		
+		}	
+	else if (bla1.length == 0)
+		{
+		}	
 	else if (window.event.keyCode == 10)
 		{
 		press('keypress','Enter');

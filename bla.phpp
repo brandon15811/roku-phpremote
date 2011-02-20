@@ -1,0 +1,38 @@
+<?php
+
+$bc_string = 'M-SEARCH * HTTP/1.1
+Host: 239.255.255.250:1900
+Man: "ssdp:discover"
+ST:upnp:rootdevice
+MX:3
+
+';
+$bc_string = str_replace("\n","\r\n",$bc_string);
+$sock = socket_create(AF_INET, SOCK_DGRAM, 0);
+if($sock < 0)
+{
+	echo "socket_create() failed, error: " . strerror($sock);
+}
+
+$opt_ret = socket_set_option($sock, 1, 6, 1);
+if($opt_ret < 0)
+{
+	echo "socket_set_option() failed, error: " . strerror($opt_ret);
+}
+$i = 6;
+while ($i > 0)
+{
+	$send_ret = socket_sendto($sock, $bc_string, strlen($bc_string), 0, '239.255.255.250', 1900);
+	if($send_ret < 0)
+	{
+		echo "socket_sendto() failed, error: " . strerror($send_ret);
+		break;
+	} else {
+		$input = socket_read($sock, 2048);
+		echo "Response from server is: $input\n";
+		sleep(1);
+	}
+	$i--;
+}
+socket_close($sock);
+?>

@@ -1,0 +1,36 @@
+<html>
+<head>
+</head>
+<body>
+<script>
+document.body.onpaste = function(e) {
+	console.log(e.clipboardData.getData("Text"));
+	e.preventDefault();
+}
+</script>
+<form name="form1" method="get" action="index.html">
+
+<span class="graytitle">IP Settings</span>
+
+
+<ul class="pageitem">
+<li class="smallfield"><span class="narrow">
+<span class="name">Add your IP</span>
+<input type="text" name="ip">
+</span>
+</li>
+
+</ul>
+<!--<span class="graytitle">Use hack-ish method for getting app list(If you don't know what this does, leave it alone)</span>
+<ul class="pageitem">
+			<li class="checkbox"><span class="name">Hack-ish Method</span>-->
+			<input name="php" type="hidden" value="on"><!-- </li>
+		</ul>-->
+<ul class="pageitem">
+
+<li class="button">
+	<input name="Submit input" type="submit" value="Submit input"></li>
+
+</ul></form>
+</body>
+</html>
