@@ -27,7 +27,7 @@ MX:3
 $bc_string = 'M-SEARCH * HTTP/1.1
 Host: 239.255.255.250:1900
 Man: "ssdp:discover"
-ST: roku:ecp
+ST: ssdp:all
 MX:3
 
 ';
@@ -37,7 +37,6 @@ if($sock < 0)
 {
 	echo "socket_create() failed, error: " . strerror($sock);
 }
-
 $opt_ret = socket_set_option($sock, SOL_SOCKET, SO_BROADCAST, 1); ;
 if($opt_ret < 0)
 {
@@ -45,15 +44,16 @@ if($opt_ret < 0)
 }
 $i = 6;
 $jsona = array();
-while ($i > 0)
-{
+/*while ($i > 0)
+{*/
 	$send_ret = socket_sendto($sock, $bc_string, strlen($bc_string), 0, '239.255.255.250', 1900);
 	if($send_ret < 0)
 	{
 		echo "socket_sendto() failed, error: " . strerror($send_ret);
 		break;
 	} else {
-		$input = socket_read($sock, 2048);
+		$input = socket_read($sock, 1);
+		exit;
 		if (strstr($input, "roku:ecp"))
 		{
 			$header = http_parse_headers($input);
@@ -76,7 +76,7 @@ while ($i > 0)
 		sleep(1);
 	}
 	$i--;
-}
+//}
 socket_close($sock);
 //echo json_encode($jsona);
 // print_r($jsona);

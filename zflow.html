@@ -104,7 +104,7 @@ function press(type,cmd)
 			xmltx=xmltxt[i]
 			linksArray.push("javascript:press(\'launch\',\'" + xmltx.getAttribute('id') + "\')")
 			captionsArray.push(xmltx.childNodes[0].nodeValue)
-			images.push("http://192.168.1.102:8060/query/icon/"+xmltx.getAttribute('id'))
+			images.push("http://"+getCookie('ip')+":8060/query/icon/"+xmltx.getAttribute('id'))
 		}
 		init(linksArray,captionsArray,images);
 	}
