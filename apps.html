@@ -92,7 +92,7 @@ appid=document.getElementById('applist');
 for (i=0;i<xmltxt.length;i++)
   { 
   xmltx=xmltxt[i]
-  appid.innerHTML=appid.innerHTML+'<li class="menu" onclick="press(\'launch\',\'' + xmltx.getAttribute('id') + '\')">'+'<a href="#">'+'<img alt="Description" src="http://'+getCookie('ip')+':8060/query/icon/'+xmltx.getAttribute('id')+'" />'+'<span class="name">'+xmltx.childNodes[0].nodeValue+'</span><span class="arrow"></span></a></li>';
+  appid.innerHTML=appid.innerHTML+'<li class="menu" onclick="press(\'launch\',\'' + xmltx.getAttribute('id') + '\')">'+'<a href="#">'+'<img alt="Description" src="http://192.168.1.102:8060/query/icon/'+xmltx.getAttribute('id')+'" />'+'<span class="name">'+xmltx.childNodes[0].nodeValue+'</span><span class="arrow"></span></a></li>';
   }
 }
 </script>
